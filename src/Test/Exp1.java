@@ -89,6 +89,5 @@ public class Exp1 {
 		PetriNetWindow frame = new PetriNetWindow(false);
 		frame.petriNet = pn;
 		frame.setVisible(true);
-
 	}
 }

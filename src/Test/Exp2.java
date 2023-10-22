@@ -18,7 +18,7 @@ public class Exp2 {
 		PetriNet pn = new PetriNet();
 		pn.PetriNetName = "Main Petri";
 		pn.NetworkPort = 1081;
-		
+
 		DataCar p1 = new DataCar();
 		p1.SetName("P1");
 		pn.PlaceList.add(p1);
@@ -26,12 +26,12 @@ public class Exp2 {
 		DataCar p2 = new DataCar();
 		p2.SetName("P2");
 		pn.PlaceList.add(p2);
-		
+
 		DataCarQueue sq = new DataCarQueue();
 		sq.SetName("SQ");
 		sq.Value.Size = 3;
 		pn.PlaceList.add(sq);
-		
+
 		// T1 ------------------------------------------------
 		PetriTransition t1 = new PetriTransition(pn);
 		t1.TransitionName = "T1";
@@ -42,10 +42,10 @@ public class Exp2 {
 		T1Ct1.SetNextCondition(LogicConnector.AND, T1Ct2);
 
 		GuardMapping grdT1 = new GuardMapping();
-		grdT1.condition= T1Ct1;
+		grdT1.condition = T1Ct1;
 		grdT1.Activations.add(new Activation(t1, "P1", TransitionOperation.AddElement, "SQ"));
 		t1.GuardMappingList.add(grdT1);
-		
+
 		t1.Delay = 0;
 		pn.Transitions.add(t1);
 
@@ -57,17 +57,17 @@ public class Exp2 {
 		Condition T2Ct1 = new Condition(t2, "SQ", TransitionCondition.HaveCarForMe);
 
 		GuardMapping grdT2 = new GuardMapping();
-		grdT2.condition= T2Ct1;
+		grdT2.condition = T2Ct1;
 		grdT2.Activations.add(new Activation(t2, "SQ", TransitionOperation.PopElementWithTarget, "P2"));
 		t2.GuardMappingList.add(grdT2);
-		
+
 		t2.Delay = 0;
 		pn.Transitions.add(t2);
 
 		System.out.println("Exp1 started \n ------------------------------");
 		pn.Delay = 2000;
-		//pn.Start();
-		
+		// pn.Start();
+
 		PetriNetWindow frame = new PetriNetWindow(false);
 		frame.petriNet = pn;
 		frame.setVisible(true);
