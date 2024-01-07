@@ -1,5 +1,7 @@
 package Tasks.week1;
 
+import java.util.ArrayList;
+
 import Components.*;
 import DataObjects.DataFloat;
 import DataObjects.DataTransfer;
@@ -34,6 +36,11 @@ public class Server {
         serverNet.PlaceList.add(p3);
         p3.Value = new TransferOperation("localhost", "1080", "P1");
 
+        DataFloat subConstantValue1 = new DataFloat();
+        subConstantValue1.SetName("subConstantValue1");
+        subConstantValue1.SetValue(0.01f);
+        spn.ConstantPlaceList.add(subConstantValue1);
+
         // --- Transitions ---
         // Transition T1
         PetriTransition t1 = new PetriTransition(serverNet);
@@ -45,6 +52,19 @@ public class Server {
         Condition T1Ct2 = new Condition(t1, "P1", TransitionCondition.NotNull);
         T1Ct1.SetNextCondition(LogicConnector.AND, T1Ct2);
 
+        ArrayList<String> lstInput = new ArrayList<String>();
+        lstInput.add("P1");
+        lstInput.add("subConstantValue1");
+
+        GuardMapping grdT1 = new GuardMapping();
+        grdT1.condition = T1Ct1;
+        grdT1.Activations.add(new Activation(t1, lstInput, TransitionOperation.Prod, "P2"));
+        // grdT1.Activations.add(new Activation(t1, "P0", TransitionOperation.Move, "P2"));
+        t1.GuardMappingList.add(grdT1);
+
+        t1.Delay = 0;
+        serverNet.Transitions.add(t1);
+
         // Transition T2
         PetriTransition t2 = new PetriTransition(serverNet);
         t2.TransitionName = "T2";
@@ -52,19 +72,10 @@ public class Server {
 
         Condition T2Ct1 = new Condition(t2, "P2", TransitionCondition.NotNull);
 
-        GuardMapping grdT1 = new GuardMapping();
-        grdT1.condition = T1Ct1;
-        grdT1.Activations.add(new Activation(t1, "P1", TransitionOperation.Move, "P2"));
-        grdT1.Activations.add(new Activation(t1, "P0", TransitionOperation.Move, "P2"));
-        t1.GuardMappingList.add(grdT1);
-
-        t1.Delay = 0;
-        serverNet.Transitions.add(t1);
-
         GuardMapping grdT2 = new GuardMapping();
         grdT2.condition = T2Ct1;
-        grdT2.Activations.add(new Activation(t2, "P2", TransitionOperation.Move, "P3"));
-        grdT2.Activations.add(new Activation(t2, "P3", TransitionOperation.SendOverNetwork, "P5"));
+        grdT2.Activations.add(new Activation(t2, "P2", TransitionOperation.SendOverNetwork, "P3"));
+        grdT2.Activations.add(new Activation(t2, "P2", TransitionOperation.Move, "P0"));
         t2.GuardMappingList.add(grdT2);
 
         t2.Delay = 0;

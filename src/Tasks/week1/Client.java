@@ -24,7 +24,7 @@ public class Client {
 
         DataFloat p1 = new DataFloat();
         p1.SetName("P1");
-        p1.SetValue(0.0f);
+        // p1.SetValue(0.0f);
         clientNet.PlaceList.add(p1);
 
         DataTransfer p3 = new DataTransfer();
@@ -57,13 +57,9 @@ public class Client {
 
         GuardMapping grdT1 = new GuardMapping();
         grdT1.condition = T1Ct1;
-        if (p1.GetValue() != null) {
-            grdT1.Activations.add(new Activation(t1, "P1", TransitionOperation.Move, "P3"));
-        }
-        if (p0.GetValue() != null) {
-            grdT1.Activations.add(new Activation(t1, "P0", TransitionOperation.Move, "P4"));
-        }
-        grdT1.Activations.add(new Activation(t1, "P3", TransitionOperation.SendOverNetwork, "P1"));
+        grdT1.Activations.add(new Activation(t1, "P1", TransitionOperation.SendOverNetwork, "P3"));
+        grdT1.Activations.add(new Activation(t1, "P0", TransitionOperation.Move, "P4"));
+        // grdT1.Activations.add(new Activation(t1, "P3", TransitionOperation.SendOverNetwork, "P1"));
         t1.GuardMappingList.add(grdT1);
 
         t1.Delay = 0;
@@ -82,7 +78,7 @@ public class Client {
         GuardMapping grdT2 = new GuardMapping();
         grdT2.condition = T2Ct1;
         grdT2.Activations.add(new Activation(t2, "P5", TransitionOperation.Move, "P6"));
-        grdT2.Activations.add(new Activation(t2, "P4", TransitionOperation.Move, "P4"));
+        grdT2.Activations.add(new Activation(t2, "P5", TransitionOperation.Move, "P0"));
         t2.GuardMappingList.add(grdT2);
 
         t2.Delay = 0;
